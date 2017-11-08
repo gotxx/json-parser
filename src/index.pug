@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    title Jsonify
+    link(rel="stylesheet" type="text/css" href="assets/css/style.min.css")
+    //if lt IE 7
+    //- link(rel="stylesheet" type="text/css" href="all-ie-only.css")
+
+  body#app
+    header.container
+      br
+      .well
+        .row
+          .col-xs-offset-1.col-xs-10
+            h1 Jsonify
+            p.lead Insert "filters.csv" to <strong>/dist</strong> folder
+            form.form-horizontal
+              .form-group
+                .col-xs-4
+                  a.btn.btn-block.btn-primary.js-get-json(href="#" role="button") Get JSON
+                .col-xs-6
+
+    section.container
+       .well#json-wrapper ...
+
+    footer.footer
+      
+    script(src="assets/js/app.min.js")
+
