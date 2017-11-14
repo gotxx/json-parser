@@ -5,6 +5,9 @@
 		this.selectorString = options.selectorString;
 		this.wrapperString = options.wrapperString;
 		this.jsonUrl = options.jsonUrl;
+		this.categories = [];
+		this.subCategories = [];
+		this.groups = [];
 	}
 
 	Jsonify.prototype.setup = function() {
@@ -26,6 +29,9 @@
 				this.request.then(this.requestSuccessHandler.bind(this));
 				this.request.catch(this.requestErrorHandler.bind(this));
 			break;
+			case 'js-parse-nav' :
+				this.parseNavObject();
+			break;
 
 			default :
 				return false;
@@ -45,6 +51,42 @@
 			};
 			xhr.send();
 		});
+	};
+	
+	Jsonify.prototype.parseNavObject = function(){
+		var arr = this.json;
+
+		for (var i=0, len=arr.length; i<len; i++) {
+
+			console.log(arr[i]);
+
+			var category = new Category(arr[i].category, arr[i].category, arr[i].id);
+
+			var subCategory = new SubCategory(arr[i].subcategory, arr[i].category, arr[i].subcategory, arr[i].id);
+
+			var group = new Group(arr[i].group, arr[i].category, arr[i].subcategory, arr[i].group, arr[i].id);
+			// console.log(subCategory);
+			
+			if(!this.objInArray(this.categories, category.id)){
+				this.categories.push( category );
+			}
+			if(this.objInArray(this.categories, category.id) && !this.objInArray(this.subCategories, subCategory.id)){
+				this.subCategories.push( subCategory );
+			}
+			if(this.objInArray(this.categories, category.id) && this.objInArray(this.subCategories, subCategory.id) && !this.objInArray(this.groups, group.id)){
+				this.groups.push( group );
+			}
+		}
+
+		console.log(this.categories);
+		console.log(this.subCategories);
+		console.log(this.groups);
+	};
+	Jsonify.prototype.objInArray = function(arr, id){
+		var existInArray = arr.find(function(el, i){
+			return el.id === id;
+		});
+		return typeof existInArray === "undefined" ? false : true;
 	};
 
 	Jsonify.prototype.requestSuccessHandler = function(response){
@@ -100,11 +142,43 @@
 	var options = {
 		selectorString: 'app',
 		wrapperString: 'json-wrapper',
-		jsonUrl: '/filters.csv'
+		jsonUrl: '/data/filters.csv'
 	};
+
+	function Category(id, name, priority) {
+		this.id = id;
+		this.name = name;
+		this.priority = priority;
+	}
+
+	function SubCategory(id, category_id, name, priority) {
+		this.id = id;
+		this.category_id = category_id;
+		this.name = name;
+		this.priority = priority;
+	}
+
+	function Group(id, category_id, subCategory_id, name, priority) {
+		this.id = id;
+		this.category_id = category_id;
+		this.subCategory_id = subCategory_id;
+		this.name = name;
+		this.priority = priority;
+	}
+
+	// function Navigation() {
+
+	// }
+
+	// Navigation.prototype.events = function(){
+
+	// };
 
 	var app = new Jsonify( options );
 	app.setup();
 	app.events();
+
+	// var nav = new Navigation();
+
 
 })();

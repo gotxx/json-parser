@@ -7,13 +7,15 @@
 			"id": "1",
 			"icon": "assets/images/icon-1.png",
 			"name": "słychawki",
-			"url": "/tag/product/list/tagId/1204"
+			"url": "/tag/product/list/tagId/1204",
+			"dupy": [{"name":"dupa1"},{"name":"dupa2"},{"name":"dupa3"},{"name":"dupa4"}]
 		},
 		{
 			"id": "2",
 			"icon": "assets/images/icon-2.png",
 			"name": "dyski zewnętrzne",
-			"url": "/tag/product/list/tagId/1203"
+			"url": "/tag/product/list/tagId/1203",
+			"dupy": [{"name":"2dupa1"},{"name":"2dupa2"},{"name":"2dupa3"},{"name":"2dupa4"}]
 		},
 		{
 			"id": "3",

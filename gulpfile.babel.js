@@ -64,6 +64,10 @@ const path = {
 	},
 	data: {
 		src: `${base.src}/`
+	},
+	csv: {
+		src: `${base.src}/data/**/*.csv`,
+		dist: `${base.dist}/data/`
 	}
 };
 
@@ -141,6 +145,12 @@ gulp.task("copy:img", () => {
         .pipe(browserSync.reload({ stream: true })); // Reload browser
 });
 
+gulp.task("copy:csv", () => {
+    return gulp.src(path.csv.src)
+        .pipe(gulp.dest(path.csv.dist))
+        .pipe(browserSync.reload({ stream: true })); // Reload browser
+});
+
 let getJsonData = (file) => {
 	delete require.cache[require.resolve(`${path.data.src}${gPath.basename(file.path)}.json`)];
 	// console.log(require(`${path.data.src}${gPath.basename(file.path)}.json`));
@@ -173,7 +183,7 @@ gulp.task('browser-sync', () => {
 // });
 
 gulp.task('build:pug', (cb) => {
-	runSequence('clean', ['sass', 'build:js', 'copy:img', 'pug:transform'], 'browser-sync', cb);
+	runSequence('clean', ['sass', 'build:js', 'copy:img', 'copy:csv', 'pug:transform'], 'browser-sync', cb);
 });
 
 // Reload browser
@@ -185,6 +195,7 @@ gulp.task('watch', () => {
 	gulp.watch(path.style.src, ['sass']); // Watch sass files
 	// gulp.watch(path.html.src, ['reload']); // Watch html files
 	gulp.watch(path.images.src, ['copy:img']); // Watch img files
+	gulp.watch(path.csv.src, ['copy:csv']); // Watch img files
 	gulp.watch(path.jade.src, ['jade:transform']); // Watch jade files
 	gulp.watch(path.script.srcJs, ['build:js']); // Watch js files
 	gulp.watch(path.pug.src, ['pug:transform']); // Watch pug files
